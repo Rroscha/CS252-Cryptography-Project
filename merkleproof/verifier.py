@@ -7,8 +7,8 @@ from collections import deque
 import re
 from merkle_utils import MerkleProof, hash_internal_node, hash_leaf
 
-merkle_proof_file = "merkle_proof.txt"      # File containing the Merkle proof to verify.   
-                           # Change this to load a different file. 
+merkle_proof_file = "merkle_proof.txt"      # File containing the Merkle proof to verify.
+                           # Change this to load a different file.
 
 MAXHEIGHT = 20             # Max height of Merkle tree
 
@@ -22,13 +22,14 @@ def read_merkle_proof(filename):
        proof from file."""
     fp = open(filename, "r")
     pos  = int(re.search('(\d*)$', fp.readline()).group(1))
-    leaf = re.search('\"(.*)\"',fp.readline()).group(1).encode()
+    leaf = re.search('\"(.*)\"', fp.readline()).group(1).encode()
     fp.readline()
     hashes = fp.readlines()
     for i in range(len(hashes)):
         hashes[i] = b64decode((hashes[i])[2:])
     fp.close()
     return MerkleProof(leaf=leaf, pos=pos, hashes=hashes)
+
 
 def compute_merkle_root_from_merkle_proof(merkle_proof : MerkleProof):
     """computes a root from the given leaf and Merkle proof."""
@@ -43,7 +44,8 @@ def compute_merkle_root_from_merkle_proof(merkle_proof : MerkleProof):
         root = hash_internal_node(left, right)
         pos >>= 1
     return root   # return the computed root
-    
+
+
 def verify_merkle_proof(merkle_proof : MerkleProof):
     """Verify a merkle proof by generating the merkle root from the
        leaf, position and hashes and seeing if it produces the correct
@@ -54,8 +56,8 @@ def verify_merkle_proof(merkle_proof : MerkleProof):
 
     computedRoot = compute_merkle_root_from_merkle_proof(merkle_proof)
     assert ROOT == computedRoot, "Verify failed"
-    print('I verified the Merkle proof: leaf #{} in the committed tree is "{}".\n'.format(merkle_proof.pos,merkle_proof.leaf.decode("utf-8")))
-
+    print('I verified the Merkle proof: leaf #{} in the committed tree is "{}".\n'.format(
+        merkle_proof.pos, merkle_proof.leaf.decode("utf-8")))
 
 
 ### Main program
@@ -70,13 +72,10 @@ if __name__ == "__main__":
         pos = int(sys.argv[1])
         assert pos == merkle_proof.pos, "Proof is for the wrong leaf"
 
-    # We already have the hard coded Merkle Root so merkle_proof 
+    # We already have the hard coded Merkle Root so merkle_proof
     # contains all other infomration to verify a leaf at a certain position.
     # Namely the leaf value, the leaf position, the proof of that leaf's
     # position
     verify_merkle_proof(merkle_proof)
 
     sys.exit(0)
-
-
-
