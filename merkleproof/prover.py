@@ -24,29 +24,30 @@ def write_merkle_proof(filename, merkle_proof: MerkleProof):
         print("  {:s}".format(b64encode(merkle_proof.hashes[i]).decode('utf-8')), file=fp)
     fp.close()
 
+
 def gen_leaves_for_merkle_tree():
     """Generates 1000 leaves for the merkle tree"""
-    
     # The leaves never change and so they always produce the same 
     # Merkle root (ROOT in verifier.py)
     leaves = [b"data item " + str(i).encode() for i in range(NUM_LEAVES)]
     print('\nI generated #{} leaves for a Merkle tree.'.format(NUM_LEAVES))
-    
+
     return leaves
+
 
 def gen_merkle_proof(leaves, pos):
     """Takes as input a list of leaves and a leaf position.
     Returns the a the list of hashes that prove the leaf is in 
     the tree at position pos."""
 
-    height = math.ceil(math.log(len(leaves),2))
+    height = math.ceil(math.log(len(leaves), 2))
     assert height < MAXHEIGHT, "Too many leaves."
 
     # hash all the leaves
-    state = list(map(hash_leaf, leaves))  
+    state = list(map(hash_leaf, leaves))
 
     # Pad the list of hashed leaves to a power of two
-    padlen = (2**height)-len(leaves)
+    padlen = (2**height) - len(leaves)
     state += [b"\x00"] * padlen
 
     # initialize a list that will contain the hashes in the proof
@@ -62,11 +63,10 @@ def gen_merkle_proof(leaves, pos):
 
     # Returns list of hashes that make up the Merkle Proof
     return hashes
-    
 
-### Main program
+
+# Main program
 if __name__ == "__main__":
-
     # Read leaf number from command line
     # We generate a Merkle proof for this leaf
     pos = 743   # default leaf number
@@ -84,8 +84,5 @@ if __name__ == "__main__":
     # Write merkle proof to a file for the verifier to access
     write_merkle_proof(merkle_proof_file, merkle_proof)
 
-    print('I generated a Merkle proof for leaf #{} in file {}\n'.format(pos,merkle_proof_file))
+    print('I generated a Merkle proof for leaf #{} in file {}\n'.format(pos, merkle_proof_file))
     sys.exit(0)
-
-
-

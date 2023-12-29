@@ -9,6 +9,7 @@ ignore =
     E116,
     E266,
     F401,
+    W605,
 
 ; exclude file
 exclude =

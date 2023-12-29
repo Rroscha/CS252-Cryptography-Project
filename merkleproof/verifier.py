@@ -18,7 +18,7 @@ ROOT = b64decode("1qIbsvuF6FrhNjMD4p06srUye6G4FfFINDDkNfKUpTs=")
 
 
 def read_merkle_proof(filename):
-    """Helper function that reads the leaf data, position of leaf, and Merkle 
+    """Helper function that reads the leaf data, position of leaf, and Merkle
        proof from file."""
     fp = open(filename, "r")
     pos  = int(re.search('(\d*)$', fp.readline()).group(1))
