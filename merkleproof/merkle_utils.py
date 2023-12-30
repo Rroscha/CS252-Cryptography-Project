@@ -2,8 +2,8 @@ import hashlib
 
 
 class MerkleProof:
-    """The Merkle Proof to be provided to a verifier to 
-       prove whether the leaf is at positions pos of the 
+    """The Merkle Proof to be provided to a verifier to
+       prove whether the leaf is at positions pos of the
        Merkle Tree."""
     def __init__(self, leaf, pos, hashes):
         self.leaf = leaf      # data of leaf being checked
