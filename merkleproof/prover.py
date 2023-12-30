@@ -47,7 +47,7 @@ def gen_merkle_proof(leaves, pos):
     state = list(map(hash_leaf, leaves))
 
     # Pad the list of hashed leaves to a power of two
-    padlen = (2**height) - len(leaves)
+    padlen = (2 ** height) - len(leaves)
     state += [b"\x00"] * padlen
 
     # initialize a list that will contain the hashes in the proof
@@ -59,7 +59,21 @@ def gen_merkle_proof(leaves, pos):
         new_state = []
         #######  YOUR CODE GOES HERE                              ######
         #######     to hash internal nodes in the tree use the    ######
-        #######     function hash_internal_node(left,right)       ######
+        #######     function hash_internal_node(left, right)      ######
+
+        # Hash and obtain current level nodes
+        counter = 0
+        while counter < len(state):
+            new_state.append(hash_internal_node(state[counter], state[counter + 1]))
+            counter += 2
+
+        if level_pos % 2 == 0:
+            hashes.append(state[level_pos + 1])
+        else:
+            hashes.append(state[level_pos - 1])
+
+        level_pos = level_pos >> 1
+        state = new_state
 
     # Returns list of hashes that make up the Merkle Proof
     return hashes
