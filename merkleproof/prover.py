@@ -14,7 +14,7 @@ NUM_LEAVES = 1000          # Number of leaves in Merkle Tree
 
 
 def write_merkle_proof(filename, merkle_proof: MerkleProof):
-    """Helper function that outputs the merkle proof to a file in a format for 
+    """Helper function that outputs the merkle proof to a file in a format for
        it to be read easily by the verifier."""
     fp = open(filename, "w")
     print("leaf position: {pos:d}".format(pos=merkle_proof.pos), file=fp)
@@ -27,7 +27,7 @@ def write_merkle_proof(filename, merkle_proof: MerkleProof):
 
 def gen_leaves_for_merkle_tree():
     """Generates 1000 leaves for the merkle tree"""
-    # The leaves never change and so they always produce the same 
+    # The leaves never change and so they always produce the same
     # Merkle root (ROOT in verifier.py)
     leaves = [b"data item " + str(i).encode() for i in range(NUM_LEAVES)]
     print('\nI generated #{} leaves for a Merkle tree.'.format(NUM_LEAVES))
@@ -37,7 +37,7 @@ def gen_leaves_for_merkle_tree():
 
 def gen_merkle_proof(leaves, pos):
     """Takes as input a list of leaves and a leaf position.
-    Returns the a the list of hashes that prove the leaf is in 
+    Returns the a the list of hashes that prove the leaf is in
     the tree at position pos."""
 
     height = math.ceil(math.log(len(leaves), 2))
